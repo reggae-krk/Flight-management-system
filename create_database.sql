@@ -111,3 +111,8 @@ CREATE TABLE budget (
   outcome DECIMAL NOT NULL
 );
 
+CREATE TABLE roles (
+  id SERIAL PRIMARY KEY,
+  role_name VARCHAR(255) NOT NULL UNIQUE
+);
+
