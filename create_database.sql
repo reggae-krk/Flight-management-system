@@ -40,3 +40,26 @@ CREATE TABLE employees (
   salary DECIMAL NOT NULL,
   airplane_id INTEGER REFERENCES airplanes(id)
 );
+
+CREATE TABLE IF NOT EXISTS countries (
+  country_code CHAR(3) PRIMARY KEY,
+  country_name VARCHAR(255) NOT NULL,
+  belongs_to_UE BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cities (
+  city_code CHAR(3) PRIMARY KEY,
+  city_name VARCHAR(255) NOT NULL,
+  country_code CHAR(3) NOT NULL,
+  FOREIGN KEY (country_code)
+  REFERENCES countries(country_code) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS airports (
+  airport_code      CHAR(3) PRIMARY KEY,
+  airport_name    VARCHAR(255)       NOT NULL,
+  city_code CHAR(3)       NOT NULL,
+  FOREIGN KEY (city_code)
+  REFERENCES cities(city_code) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
