@@ -84,3 +84,29 @@ CREATE TABLE IF NOT EXISTS services_cost (
   service_cost DECIMAL NOT NULL
 );
 
+CREATE TABLE reservations (
+  id SERIAL PRIMARY KEY,
+  flight_id CHAR(6) NOT NULL REFERENCES flights(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  passenger_id INTEGER NOT NULL REFERENCES passengers(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  seat_number INTEGER NOT NULL,
+--   function set default for seat number
+  is_child BOOLEAN
+);
+
+CREATE TABLE additional_services (
+  reservations_id INTEGER NOT NULL REFERENCES reservations(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  service_id INTEGER NOT NULL REFERENCES services_cost(id),
+  cost DECIMAL NOT NULL
+);
+
+CREATE TABLE passengers (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE budget (
+  date TIMESTAMP NOT NULL,
+  income DECIMAL NOT NULL,
+  outcome DECIMAL NOT NULL
+);
