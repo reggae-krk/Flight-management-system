@@ -49,8 +49,8 @@ CREATE TABLE flights (
   flight_connection_id INTEGER NOT NULL REFERENCES flight_connections(id) ON DELETE CASCADE  ON UPDATE CASCADE,
   scheduled_departure_time TIMESTAMP NOT NULL,
   scheduled_arrival_time TIMESTAMP NOT NULL,
-  actual_departure_time TIMESTAMP NOT NULL,
-  actual_arrival_time TIMESTAMP NOT NULL,
+  actual_departure_time TIMESTAMP,
+  actual_arrival_time TIMESTAMP,
   base_price DECIMAL NOT NULL
 );
 
