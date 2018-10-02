@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS flights_management_system;
-CREATE DATABASE flights_management_system;
+-- CREATE DATABASE flights_management_system;
 
 CREATE TABLE models (
   id SERIAL PRIMARY KEY,
@@ -39,8 +39,8 @@ CREATE TABLE airports (
 CREATE TABLE flight_connections (
   id SERIAL PRIMARY KEY,
   airplane_id INTEGER REFERENCES airplanes(id),
-  departure_city CHAR(3) REFERENCES airports(airport_code) ON DELETE CASCADE ON UPDATE CASCADE,
-  arrival_city CHAR(3) REFERENCES airports(airport_code) ON DELETE CASCADE ON UPDATE CASCADE,
+  departure_airport CHAR(3) REFERENCES airports(airport_code) ON DELETE CASCADE ON UPDATE CASCADE,
+  arrival_airport CHAR(3) REFERENCES airports(airport_code) ON DELETE CASCADE ON UPDATE CASCADE,
   distance INTEGER NOT NULL
 );
 
