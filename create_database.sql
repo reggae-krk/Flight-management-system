@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS flights_management_system;
+-- DROP DATABASE IF EXISTS flights_management_system;
 -- CREATE DATABASE flights_management_system;
 
 CREATE TABLE models (
@@ -54,11 +54,16 @@ CREATE TABLE flights (
   base_price DECIMAL NOT NULL
 );
 
+CREATE TABLE roles (
+  id SERIAL PRIMARY KEY,
+  role_name VARCHAR(255) NOT NULL UNIQUE
+);
+
 CREATE TABLE employees (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
-  role VARCHAR(255) NOT NULL,
+  role_id INTEGER NOT NULL REFERENCES roles(id),
   salary DECIMAL NOT NULL,
   airplane_id INTEGER REFERENCES airplanes(id)
 );
@@ -109,10 +114,5 @@ CREATE TABLE budget (
   date TIMESTAMP PRIMARY KEY,
   income DECIMAL NOT NULL,
   outcome DECIMAL NOT NULL
-);
-
-CREATE TABLE roles (
-  id SERIAL PRIMARY KEY,
-  role_name VARCHAR(255) NOT NULL UNIQUE
 );
 
