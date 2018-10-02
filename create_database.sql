@@ -100,7 +100,7 @@ CREATE TABLE reservations (
 );
 
 CREATE TABLE additional_services (
-  reservations_id INTEGER NOT NULL REFERENCES reservations(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  reservation_id INTEGER NOT NULL REFERENCES reservations(id) ON DELETE CASCADE ON UPDATE CASCADE,
   service_id INTEGER NOT NULL REFERENCES services_cost(id),
   cost DECIMAL NOT NULL
 );
