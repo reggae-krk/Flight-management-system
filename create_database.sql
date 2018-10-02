@@ -63,3 +63,24 @@ CREATE TABLE IF NOT EXISTS airports (
   REFERENCES cities(city_code) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS document_type (
+  type_id SERIAL PRIMARY KEY,
+  type_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS documents (
+  passenger_id INTEGER NOT NULL,
+  document_number VARCHAR(255) NOT NULL,
+  type_id INTEGER NOT NULL,
+  FOREIGN KEY (passenger_id)
+  REFERENCES passengers(passenger_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (type_id)
+  REFERENCES document_type(type_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS services_cost (
+  id SERIAL PRIMARY KEY,
+  service_name VARCHAR(255) NOT NULL,
+  service_cost DECIMAL NOT NULL
+);
+
