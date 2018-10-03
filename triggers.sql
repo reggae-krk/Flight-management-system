@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION check_if_airplane_max_distance_is_bigger_than_connect
     max_airplane_dis = (SELECT max_distance FROM models WHERE id = modelID);
 
     IF max_airplane_dis < NEW.distance THEN
-      RAISE WARNING 'Distans between cities is bigger than max airplane distance';
+      RAISE WARNING 'Distance between cities is bigger than max airplane distance';
       RETURN NULL;
     end if;
 
