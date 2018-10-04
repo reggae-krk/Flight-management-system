@@ -10,8 +10,8 @@ DECLARE
 BEGIN
   FOR flights_record IN
     SELECT id FROM flights
-    WHERE DATE_PART('month', scheduled_departure_time::DATE) = month
-    AND DATE_PART('year', scheduled_departure_time::DATE) = year
+    WHERE DATE_PART('month', scheduled_departure_time) = month
+    AND DATE_PART('year', scheduled_departure_time) = year
   LOOP
     flight_ids := ARRAY_APPEND(flight_ids, flights_record.id);
   END LOOP;
