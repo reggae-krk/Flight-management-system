@@ -7,7 +7,7 @@ DECLARE
   departure_date_return TIMESTAMP;
 BEGIN
 
-  FOR i IN 0..7 LOOP
+  FOR i IN 0..30 LOOP
       departure_date := start_date + ((i || 'days')::INTERVAL);
       departure_date_return := start_date_return + ((i || 'days')::INTERVAL);
       RAISE INFO 'inserting for date: %', departure_date;
@@ -17,11 +17,11 @@ BEGIN
                   id,
                   CASE
                     WHEN id%2 != 0 THEN departure_date
-                    ELSE departure_date_return
+                    ELSE (departure_date + (((calculate_flight_duration(distance) + 120) || 'minutes')::INTERVAL))
                   END,
                   CASE
                     WHEN id%2 != 0 THEN (departure_date + ((calculate_flight_duration(distance) || 'minutes')::INTERVAL))
-                    ELSE (departure_date_return + ((calculate_flight_duration(distance) || 'minutes')::INTERVAL))
+                    ELSE (departure_date + (((calculate_flight_duration(distance)*2 + 120) || 'minutes')::INTERVAL))
                   END,
                   calculate_flight_cost(distance, departure_date)
           FROM flight_connections);
