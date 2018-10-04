@@ -98,3 +98,53 @@ CREATE TRIGGER check_flight_time_insert
   BEFORE INSERT ON flights
   FOR EACH ROW
   EXECUTE PROCEDURE check_if_time_flight_is_correct_insert();
+  
+CREATE OR REPLACE FUNCTION check_reserv_if_it_needs_passport()
+  RETURNS trigger AS $$
+  DECLARE
+    is_passenger_from_ue BOOLEAN;
+    list_documents integer[];
+    list boolean[];
+  BEGIN
+    is_passenger_from_ue = (SELECT belongs_to_UE FROM countries
+                WHERE country_code =
+                      (SELECT country FROM passengers
+                        WHERE id = NEW.passenger_id));
+
+    list = (select array(SELECT country.belongs_to_ue
+            FROM flights f
+              inner join flight_connections fc on f.flight_connection_id = fc.id
+              inner join airports a on fc.arrival_airport = a.airport_code or
+                                       fc.departure_airport = a.airport_code
+              inner join cities city on a.city_code = city.city_code
+              inner join countries country on city.country_code = country.country_code
+            where f.id = NEW.flight_id));
+
+    list_documents = (SELECT array(SELECT type_id FROM documents WHERE passenger_id = NEW.passenger_id));
+
+    IF (SELECT true = ALL(list)) THEN
+      IF is_passenger_from_ue AND ((SELECT 1 = ANY(list_documents)) OR (SELECT 2 = ANY(list_documents))) THEN
+        RETURN NEW;
+      ELSEIF is_passenger_from_ue = FALSE AND (SELECT 1 = ANY(list_documents)) THEN
+        RETURN NEW;
+      ELSE
+        RAISE WARNING 'Passenger needs passport';
+        RETURN NULL;
+      end if;
+    ELSE
+      IF (SELECT 1 = ANY(list)) THEN
+        RETURN NEW;
+      ELSE
+        RAISE WARNING 'Passenger needs passport';
+        RETURN NULL;
+      end if;
+    end if;
+
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_documents
+BEFORE INSERT ON reservations
+FOR EACH ROW
+EXECUTE PROCEDURE check_reserv_if_it_needs_passport();
