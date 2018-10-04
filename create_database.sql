@@ -76,7 +76,8 @@ CREATE TABLE document_type (
 CREATE TABLE passengers (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL
+  last_name VARCHAR(255) NOT NULL,
+  country CHAR(3) NOT NULL
 );
 
 CREATE TABLE documents (
